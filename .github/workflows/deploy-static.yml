@@ -1,4 +1,4 @@
-name: Deploy static site to S3 + CloudFront
+name: Deploy (S3 + CloudFront)
 
 on:
   push:
@@ -6,12 +6,12 @@ on:
 
 permissions:
   contents: read
-  id-token: write   # for OIDC (recommended)
+  id-token: write
 
 env:
   AWS_REGION: us-east-1
-  S3_BUCKET: pitron-co-site
-  CLOUDFRONT_DISTRIBUTION_ID: YOUR_DISTRIBUTION_ID
+  S3_BUCKET: pitronengineeringllc
+  CLOUDFRONT_DISTRIBUTION_ID: E2UF0P7C5WZ4TF
 
 jobs:
   deploy:
@@ -38,7 +38,7 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Deploy to S3
+      - name: Upload to S3
         run: aws s3 sync dist/ s3://${{ env.S3_BUCKET }} --delete
 
       - name: Invalidate CloudFront
