@@ -1,7 +1,16 @@
 /* Base reset */
 * { box-sizing: border-box; }
-html, body, #root {
-  height: 100%;
+html, body, #root { height: 100%; }
+
+/* Fluid spacing tokens (keeps desktop look, tightens on small screens) */
+:root{
+  --container-max: 1100px;
+  --gutter: clamp(16px, 3.6vw, 32px);          /* side padding */
+  --section-y: clamp(44px, 6vw, 64px);         /* section vertical padding */
+  --nav-y: clamp(10px, 2.2vw, 14px);           /* navbar vertical padding */
+  --nav-gap: clamp(10px, 2.4vw, 16px);
+  --hero-top: clamp(52px, 7vw, 72px);
+  --hero-bottom: clamp(28px, 4.5vw, 36px);
 }
 
 body {
@@ -15,6 +24,14 @@ body {
   background-attachment: fixed;
 }
 
+/* Mobile/iOS: avoid background-attachment: fixed jank */
+@media (max-width: 768px) {
+  body { background-attachment: scroll; }
+}
+@supports (-webkit-touch-callout: none) {
+  body { background-attachment: scroll; }
+}
+
 /* Root app layout */
 #root { min-height: 100vh; }
 .app {
@@ -26,16 +43,11 @@ body {
 
 /* Layout helpers */
 .container {
-  width: min(1100px, calc(100% - 32px));
+  width: min(var(--container-max), calc(100% - (var(--gutter) * 2)));
   margin: 0 auto;
 }
 
-.section {
-  padding: 64px 0;
-}
-@media (max-width: 640px) {
-  .section { padding: 44px 0; }
-}
+.section { padding: var(--section-y) 0; }
 
 /* Navbar */
 .nav {
@@ -50,8 +62,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 14px 0;
+  gap: var(--nav-gap);
+  padding: var(--nav-y) 0;
 }
 .brand {
   display: inline-flex;
@@ -73,16 +85,17 @@ body {
 .navLinks {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: clamp(10px, 2vw, 12px);
   flex-wrap: wrap;
   justify-content: flex-end;
 }
 .navLink {
   text-decoration: none;
   color: rgba(255,255,255,.82);
-  padding: 8px 10px;
+  padding: clamp(7px, 1.8vw, 8px) clamp(9px, 2.2vw, 10px);
   border-radius: 10px;
   border: 1px solid transparent;
+  font-size: clamp(13px, 2.8vw, 14px);
 }
 .navLink:hover {
   background: rgba(255,255,255,.06);
@@ -97,32 +110,30 @@ body {
   background: rgba(135,240,201,.10);
 }
 
-/* Hero */
-.hero {
-  padding:  72px 0 36px;
-}
-  
+/* Small screens: keep navbar consistent (no “random” wrapping) */
 @media (max-width: 640px) {
-  .hero { padding: 52px 0 28px; }
+  .navInner { flex-wrap: wrap; }
+  .navLinks { width: 100%; justify-content: flex-start; }
 }
 
+/* Hero */
+.hero { padding: var(--hero-top) 0 var(--hero-bottom); }
 
 .heroGrid {
   display: grid;
   grid-template-columns: 1.25fr .95fr;
-  gap: 20px;
-  align-items: center; /* changed from start */
+  gap: clamp(14px, 3.2vw, 20px);
+  align-items: center;
+}
+
+/* Stack hero cleanly on tablets/phones */
+@media (max-width: 900px) {
+  .heroGrid { grid-template-columns: 1fr; }
 }
 
 /* If you’re not using the right-side hero panel on Home */
-.heroSolo .heroGrid {
-  grid-template-columns: 1fr;
-}
-
-.heroSolo .heroCopy {
-  max-width: 760px;
-}
-
+.heroSolo .heroGrid { grid-template-columns: 1fr; }
+.heroSolo .heroCopy { max-width: 760px; }
 
 /* Typography */
 .eyebrow {
@@ -143,7 +154,7 @@ body {
   margin: 0 0 10px;
 }
 .lead {
-  font-size: 16px;
+  font-size: clamp(15px, 2.8vw, 16px);
   line-height: 1.6;
   color: rgba(255,255,255,.78);
   margin: 0 0 18px;
@@ -160,7 +171,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 14px;
+  padding: clamp(9px, 2.2vw, 10px) clamp(12px, 3vw, 14px);
   border-radius: 12px;
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.04);
