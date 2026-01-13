@@ -18,18 +18,22 @@ body {
   min-height: 100vh;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   color: rgba(255,255,255,.92);
-  background: radial-gradient(1000px 600px at 20% 0%, rgba(122,167,255,.18), transparent 60%),
-              radial-gradient(900px 500px at 90% 10%, rgba(135,240,201,.12), transparent 60%),
-              #070b14;
-  background-attachment: fixed;
+  /* Keep a solid base color on the body and render the fancy background on a fixed
+     pseudo-element to avoid mobile "seams" / banding during scroll repaints. */
+  background: #070b14;
 }
 
-/* Mobile/iOS: avoid background-attachment: fixed jank */
-@media (max-width: 768px) {
-  body { background-attachment: scroll; }
-}
-@supports (-webkit-touch-callout: none) {
-  body { background-attachment: scroll; }
+/* Fixed background layer (stable across desktop + mobile) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(1000px 600px at 20% 0%, rgba(122,167,255,.18), transparent 60%),
+    radial-gradient(900px 500px at 90% 10%, rgba(135,240,201,.12), transparent 60%),
+    #070b14;
 }
 
 /* Root app layout */
@@ -48,6 +52,20 @@ body {
 }
 
 .section { padding: var(--section-y) 0; }
+
+/* Add subtle rhythm between stacked sections (very low-contrast divider) */
+.section + .section {
+  position: relative;
+}
+.section + .section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.07), transparent);
+}
 
 /* Navbar */
 .nav {
@@ -112,8 +130,23 @@ body {
 
 /* Small screens: keep navbar consistent (no “random” wrapping) */
 @media (max-width: 640px) {
+  /* Mobile breathing room + less "crowded" hero without changing desktop look */
+  :root{
+    --section-y: clamp(52px, 9vw, 72px);
+    --hero-bottom: clamp(36px, 7vw, 56px);
+    --nav-y: 8px;
+  }
+
   .navInner { flex-wrap: wrap; }
   .navLinks { width: 100%; justify-content: flex-start; }
+
+  /* Slightly tighter CTAs on mobile (same styling, less visual weight) */
+  .btnRow { gap: 8px; }
+  .btn { padding: 9px 12px; }
+
+  /* Reduce perceived density in the hero copy */
+  .hero { padding: var(--hero-top) 0 var(--hero-bottom); }
+  .lead { margin-bottom: 16px; }
 }
 
 /* Hero */
