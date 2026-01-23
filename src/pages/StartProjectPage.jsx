@@ -33,7 +33,7 @@ export default function StartProjectPage() {
               </p>
               <div className="btnRow">
                 <a className="btn btnPrimary" href={`mailto:${email}?subject=${subject}&body=${body}`}>Send email</a>
-                <a className="btn" href="/services">View services</a>
+                <a className="btn" href="/ServicesPage">View services</a>
               </div>
             </div>
 
