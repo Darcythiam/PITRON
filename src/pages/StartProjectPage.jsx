@@ -1,8 +1,6 @@
 import React from "react";
-import "./ServicesPage.jsx";
 import { motion } from "framer-motion";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 
 export default function StartProjectPage() {
   const email = "contact@pitron.co";
@@ -36,7 +34,7 @@ export default function StartProjectPage() {
               </p>
               <div className="btnRow">
                 <a className="btn btnPrimary" href={`mailto:${email}?subject=${subject}&body=${body}`}>Send email</a>
-                <a className="btn" href="./ServicesPage.jsx">View services</a>
+                <Link className="btn" to="/services">View services</Link>
               </div>
             </div>
 
