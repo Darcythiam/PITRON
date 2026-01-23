@@ -1,6 +1,7 @@
 import React from "react";
 import "./ServicesPage.jsx";
 import { motion } from "framer-motion";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 
 export default function StartProjectPage() {
@@ -35,7 +36,7 @@ export default function StartProjectPage() {
               </p>
               <div className="btnRow">
                 <a className="btn btnPrimary" href={`mailto:${email}?subject=${subject}&body=${body}`}>Send email</a>
-                <a className="btn" href="/ServicesPage">View services</a>
+                <a className="btn" href="./ServicesPage.jsx">View services</a>
               </div>
             </div>
 
