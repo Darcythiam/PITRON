@@ -1,5 +1,5 @@
 import React from "react";
-import "/ServicesPage.jsx";
+import "./ServicesPage.jsx";
 import { motion } from "framer-motion";
 
 
