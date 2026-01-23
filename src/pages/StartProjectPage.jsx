@@ -1,5 +1,7 @@
 import React from "react";
+import "/ServicesPage.jsx";
 import { motion } from "framer-motion";
+
 
 export default function StartProjectPage() {
   const email = "contact@pitron.co";
